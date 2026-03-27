@@ -1,20 +1,22 @@
 package geometry
 
+import "github.com/golang/geo/r3"
+
 type Cube struct {
-	v0, v1 Vector3D
+	v0, v1 r3.Vector
 }
 
-func divideCube(parent Cube) []Cube {
-	mid := getMidPoint(parent.v0, parent.v1)
+func (parent Cube) divideCube() []Cube {
+	mid := parent.v0.Add(parent.v1).Mul(0.5)
 
 	return []Cube{
 		{parent.v0, mid},
-		{Vector3D{mid.x, parent.v0.y, parent.v0.z}, Vector3D{parent.v1.x, mid.y, mid.z}},
-		{Vector3D{parent.v0.x, mid.y, parent.v0.z}, Vector3D{mid.x, parent.v1.y, mid.z}},
-		{Vector3D{mid.x, mid.y, parent.v0.z}, Vector3D{parent.v1.x, parent.v1.y, mid.z}},
-		{Vector3D{parent.v0.x, parent.v0.y, mid.z}, Vector3D{mid.x, mid.y, parent.v1.z}},
-		{Vector3D{mid.x, parent.v0.y, mid.z}, Vector3D{parent.v1.x, mid.y, parent.v1.z}},
-		{Vector3D{parent.v0.x, mid.y, mid.z}, Vector3D{mid.x, parent.v1.y, parent.v1.z}},
-		{Vector3D{mid.x, mid.y, mid.z}, parent.v1},
+		{r3.Vector{X: mid.X, Y: parent.v0.Y, Z: parent.v0.Z}, r3.Vector{X: parent.v1.X, Y: mid.Y, Z: mid.Z}},
+		{r3.Vector{X: parent.v0.X, Y: mid.Y, Z: parent.v0.Z}, r3.Vector{X: mid.X, Y: parent.v1.Y, Z: mid.Z}},
+		{r3.Vector{X: mid.X, Y: mid.Y, Z: parent.v0.Z}, r3.Vector{X: parent.v1.X, Y: parent.v1.Y, Z: mid.Z}},
+		{r3.Vector{X: parent.v0.X, Y: parent.v0.Y, Z: mid.Z}, r3.Vector{X: mid.X, Y: mid.Y, Z: parent.v1.Z}},
+		{r3.Vector{X: mid.X, Y: parent.v0.Y, Z: mid.Z}, r3.Vector{X: parent.v1.X, Y: mid.Y, Z: parent.v1.Z}},
+		{r3.Vector{X: parent.v0.X, Y: mid.Y, Z: mid.Z}, r3.Vector{X: mid.X, Y: parent.v1.Y, Z: parent.v1.Z}},
+		{r3.Vector{X: mid.X, Y: mid.Y, Z: mid.Z}, parent.v1},
 	}
 }
