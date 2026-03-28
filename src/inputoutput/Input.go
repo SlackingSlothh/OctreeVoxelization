@@ -37,21 +37,12 @@ func ReadObj(path string) (geometry.Cube, []geometry.Triangle3D) {
 			if err != nil {continue}
 			vertexNum++
 			vertices[vertexNum] = vertex
-			if (vertexNum == 1) {
-				minX = vertex.X
-				maxX = vertex.X
-				minY = vertex.Y
-				maxY = vertex.Y
-				minZ = vertex.Z
-				maxZ = vertex.Z
-			} else {
-				minX = min(minX, vertex.X)
-				maxX = max(maxX, vertex.X)
-				minY = min(minY, vertex.Y)
-				maxY = max(maxY, vertex.Y)
-				minZ = min(minZ, vertex.Z)
-				maxZ = max(maxZ, vertex.Z)
-			}
+			minX = min(minX, vertex.X)
+			maxX = max(maxX, vertex.X)
+			minY = min(minY, vertex.Y)
+			maxY = max(maxY, vertex.Y)
+			minZ = min(minZ, vertex.Z)
+			maxZ = max(maxZ, vertex.Z)
 		} else if line[0] == 'f' {
 			face, err := ParseFace(line)
 			if err != nil {continue}
