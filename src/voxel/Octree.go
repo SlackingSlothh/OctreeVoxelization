@@ -60,28 +60,6 @@ func (node *OctreeNode) constructHelper(currentDepth int, stats *ConstructStats,
 	dividedCube := node.Boundary.DivideCube()
 	maxDepthReached := currentDepth
 
-	for _, childCube := range dividedCube {
-		childNode := OctreeNode{Boundary: childCube}
-		for _, triangle := range node.Triangles {
-			if triangle.IsIntersecting(childCube) {
-				childNode.Triangles = append(childNode.Triangles, triangle)
-			}
-		}
-
-		if len(childNode.Triangles) == 0 {
-			childNode.Children = nil
-			for len(stats.NodesPerLevel) <= currentDepth+1 {
-				stats.NodesPerLevel = append(stats.NodesPerLevel, 0)
-			}
-			for len(stats.LeavesPerLevel) <= currentDepth+1 {
-				stats.LeavesPerLevel = append(stats.LeavesPerLevel, 0)
-			}
-			stats.NodesPerLevel[currentDepth+1]++
-			stats.LeavesPerLevel[currentDepth+1]++
-			node.Children = append(node.Children, childNode)
-			continue
-		}
-	}
 	var wg sync.WaitGroup
 	results := make(chan struct {
 		node      OctreeNode
